@@ -1,0 +1,12 @@
+version: '3'
+services:
+  tensorflow_keras:
+    image: jupyter/tensorflow-notebook
+    container_name: keras
+    ports:
+      - "8888:8888"
+    volumes: 
+      - ../../..:/home/jovyan/work
+    command: jupyter notebook -e GRANT_SUDO=yes --allow-root
+    restart: always
+
