@@ -2,7 +2,7 @@ version: '3.6'
 services:
   web:
     image: 'gitlab/gitlab-ce:latest'
-    restart: always
+    restart: 'no'
     hostname: '192.168.0.200'
     environment:
       GITLAB_OMNIBUS_CONFIG: |
