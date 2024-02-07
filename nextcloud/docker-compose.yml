@@ -1,0 +1,56 @@
+version: '3'
+
+services:
+  nc:
+    image: nextcloud:apache
+    restart: always
+    ports:
+      - 5555:80
+    depends_on:
+      - mariadb
+      - redis
+    volumes:
+      - nc_data:/var/www/html
+    networks:
+      - redisnet
+      - dbnet
+    environment:
+      - REDIS_HOST=redis
+      - MYSQL_HOST=mariadb
+      - MYSQL_DATABASE=nextcloud
+      - MYSQL_USER=nextcloud
+      - MYSQL_PASSWORD=nextcloud
+  redis:
+    image: redis:alpine
+    restart: always
+    volumes:
+      - redis:/data
+    networks:
+      - redisnet
+    expose:
+      - 6379
+  mariadb:
+    image: mariadb:latest
+    command: --transaction-isolation=READ-COMMITTED --binlog-format=ROW
+    restart: always
+    volumes:
+      - db_data:/var/lib/mysql
+    networks:
+      - dbnet
+    environment:
+      - MYSQL_DATABASE=nextcloud
+      - MYSQL_USER=nextcloud
+      - MYSQL_ROOT_PASSWORD=nextcloud
+      - MYSQL_PASSWORD=nextcloud
+    expose:
+      - 3306
+volumes:
+  db_data:
+    driver: local
+  nc_data:
+    driver: local
+  redis:
+    driver: local
+networks:
+  dbnet:
+  redisnet:
