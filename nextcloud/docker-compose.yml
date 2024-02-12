@@ -2,10 +2,11 @@ version: '3'
 
 services:
   nc:
-    image: nextcloud:apache
+    build: .
     restart: always
     ports:
       - 5555:80
+      - 443:443
     depends_on:
       - mariadb
       - redis
@@ -15,11 +16,18 @@ services:
       - redisnet
       - dbnet
     environment:
+      - VIRTUAL_HOST=nextcloud.local
       - REDIS_HOST=redis
       - MYSQL_HOST=mariadb
       - MYSQL_DATABASE=nextcloud
       - MYSQL_USER=nextcloud
-      - MYSQL_PASSWORD=nextcloud
+      - MYSQL_PASSWORD=geheim
+    healthcheck:
+      test: ["CMD", "/usr/bin/healthcheck"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
   redis:
     image: redis:alpine
     restart: always
@@ -29,6 +37,13 @@ services:
       - redisnet
     expose:
       - 6379
+    command: ["--databases", "1"]
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
   mariadb:
     image: mariadb:latest
     command: --transaction-isolation=READ-COMMITTED --binlog-format=ROW
@@ -40,10 +55,29 @@ services:
     environment:
       - MYSQL_DATABASE=nextcloud
       - MYSQL_USER=nextcloud
-      - MYSQL_ROOT_PASSWORD=nextcloud
-      - MYSQL_PASSWORD=nextcloud
+      - MYSQL_ROOT_PASSWORD=geheimroot
+      - MYSQL_PASSWORD=geheim
     expose:
       - 3306
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-u", "root", "--password=gheimroot"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  cron:
+    image: nextcloud:apache
+    container_name: nextcloud-cron
+    networks:
+      - dbnet
+    volumes:
+      - nc_data:/var/www/html
+    entrypoint: /cron.sh
+    restart: unless-stopped
+    depends_on:
+      - mariadb
+      - redis
+
 volumes:
   db_data:
     driver: local
@@ -51,6 +85,8 @@ volumes:
     driver: local
   redis:
     driver: local
+
 networks:
   dbnet:
   redisnet:
+
