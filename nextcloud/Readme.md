@@ -1,7 +1,6 @@
 # Docker compose file for a Nextcloud server
 To be run on QNAP NAS in Container station or any other Docker compatible environment
 
-
 Containers for:
 - Nextcloud server
 - MariaDB (SQL DB)
@@ -27,4 +26,5 @@ Use `docker compose build --pull` to update the images.
 Currently no healthcheck for the nextcloud container is implemented. Although something is described [here](https://github.com/nextcloud/docker/issues/676), this seems to be an uncertain solution.
 This application does not use a reverse proxy.
 
-
+## Note to QNAP users
+It seems that Container station currently (as of QTS 5.1.4) does not support build commands in docker compose files. Hence you need to build the adapted Nextcloud image (from dockerfile) manually beforehand. Connect to your QNAP by SSH and navigate to the directory where you have downloaded the repo, then run `docker build . --tag nc_enhanced:latest`. Then create your Nextcloud application in Container station and replace the line `build: .` with `image: nc_enhanced:latest`.
