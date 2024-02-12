@@ -5,8 +5,7 @@ services:
     build: .
     restart: always
     ports:
-      - 5555:80
-      - 443:443
+      - 5555:443
     depends_on:
       - mariadb
       - redis
@@ -22,11 +21,11 @@ services:
       - MYSQL_DATABASE=nextcloud
       - MYSQL_USER=nextcloud
       - MYSQL_PASSWORD=geheim
-    healthcheck:
-      test: ["CMD", "/usr/bin/healthcheck"]
-      interval: 30s
-      timeout: 10s
-      retries: 5
+#    healthcheck:
+#      test: ["CMD", "/usr/bin/healthcheck"]
+#      interval: 30s
+#      timeout: 10s
+#      retries: 5
 
   redis:
     image: redis:alpine
@@ -60,7 +59,7 @@ services:
     expose:
       - 3306
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-u", "root", "--password=gheimroot"]
+      test: ["CMD", "mysqladmin", "ping", "-u", "root", "--password=geheimroot"]
       interval: 10s
       timeout: 5s
       retries: 5
