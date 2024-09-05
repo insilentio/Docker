@@ -57,12 +57,12 @@ services:
     environment:
       - MYSQL_DATABASE=nextcloud
       - MYSQL_USER=nextcloud
-      - MYSQL_ROOT_PASSWORD=geheim
+      - MYSQL_ROOT_PASSWORD=geheimroot
       - MYSQL_PASSWORD=geheim
     expose:
       - 3306
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-u", "root", "--password=3?Mc{N2wPp£ZRr{:(]q%"]
+      test: ["CMD", "mysqladmin", "ping", "-u", "root", "--password=geheimroot"]
       interval: 10s
       timeout: 5s
       retries: 5
