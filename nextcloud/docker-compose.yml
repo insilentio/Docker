@@ -21,7 +21,7 @@ services:
       - MYSQL_HOST=mariadb
       - MYSQL_DATABASE=nextcloud
       - MYSQL_USER=nextcloud
-      - MYSQL_PASSWORD=cWd{,SsqjxP.94UXt**L
+      - MYSQL_PASSWORD=geheim
 #    healthcheck:
 #      test: ["CMD", "/usr/bin/healthcheck"]
 #      interval: 30s
@@ -57,8 +57,8 @@ services:
     environment:
       - MYSQL_DATABASE=nextcloud
       - MYSQL_USER=nextcloud
-      - MYSQL_ROOT_PASSWORD=3?Mc{N2wPp£ZRr{:(]q%
-      - MYSQL_PASSWORD=cWd{,SsqjxP.94UXt**L
+      - MYSQL_ROOT_PASSWORD=geheim
+      - MYSQL_PASSWORD=geheim
     expose:
       - 3306
     healthcheck:
