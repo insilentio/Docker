@@ -17,6 +17,11 @@ services:
         source: /share/Media/Musik/
         target: /media/Musik
         read_only: true
+      - type: bind
+        source: /share/Media/Books/
+        target: /media/Books
+        read_only: true
+
     restart: 'unless-stopped'
     ports:
       - 8096:8096
