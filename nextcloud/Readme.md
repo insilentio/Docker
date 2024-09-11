@@ -19,6 +19,7 @@ File dirs of nextcloud, sql and redis are mapped to local file system.
 **Make sure** to replace usernames and pw's in the docker-compose.yml as well as the email in the dockerfile!
 
 ## Run
+
 Use `docker compose up -d` to run the application. Change to the nextcloud *url:port* and start the installation by choosing an admin user name and pw.
 Use `docker compose build --pull` to update the images. Then connect to the main container `docker exec -u 33 -it <containter-id> /bin/sh` (the -u option may need to be adapted to the correct number). Run the update command for nextcloud `./occ upgrade` (ideally you are already in the correct directory, otherwise change to `cd /var/www/html`. Done.
 
