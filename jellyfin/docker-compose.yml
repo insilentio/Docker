@@ -10,15 +10,15 @@ services:
       - /share/Container/mount_volumes/jellyfin/config:/config
       - /share/Container/mount_volumes/jellyfin/cache:/cache
       - type: bind
-        source: /share/Album/
+        source: /share/Container/mount_volumes/nextcloud/nc_data/data/Daniel/files/Photos
         target: /media/Album
         read_only: true
       - type: bind
-        source: /share/Media/Musik/
+        source: /share/Multimedia/Musik/
         target: /media/Musik
         read_only: true
       - type: bind
-        source: /share/Media/Books/
+        source: /share/Multimedia/Books/
         target: /media/Books
         read_only: true
       - type: bind
@@ -30,7 +30,7 @@ services:
         target: /media/TVSeries
         read_only: true
       - type: bind
-        source: /share/Media/Fotobücher
+        source: /share/Multimedia/Fotobücher
         target: /media/Photobooks
         read_only: true
     restart: 'unless-stopped'
