@@ -4,14 +4,14 @@ services:
   nc:
     build: . 
     container_name: nextcloud-server
-    restart: always
+    restart: unless-stopped
     ports:
       - 5555:443
     depends_on:
       - mariadb
       - redis
     volumes:
-      - /share/Container/mount_volumes/nextcloud/nc_data:/var/www/html
+      - /Users/Daniel/Downloads/nc/nc_data:/var/www/html
     networks:
       - redisnet
       - dbnet
@@ -32,9 +32,9 @@ services:
   redis:
     image: redis:alpine
     container_name: nextcloud-redis
-    restart: always
+    restart: unless-stopped
     volumes:
-      - /share/Container/mount_volumes/nextcloud/redis:/data
+      - /Users/Daniel/Downloads/nc/redis:/data
     networks:
       - redisnet
     expose:
@@ -50,9 +50,9 @@ services:
     image: mariadb:latest
     container_name: nextcloud-mariadb
     command: --transaction-isolation=READ-COMMITTED --binlog-format=ROW
-    restart: always
+    restart: unless-stopped
     volumes:
-      - /share/Container/mount_volumes/nextcloud/db_data:/var/lib/mysql
+      - /Users/Daniel/Downloads/nc/db_data:/var/lib/mysql
     networks:
       - dbnet
     environment:
@@ -74,7 +74,7 @@ services:
     networks:
       - dbnet
     volumes:
-      - /share/Container/mount_volumes/nextcloud/nc_data:/var/www/html
+      - /Users/Daniel/Downloads/nc/nc_data:/var/www/html
     entrypoint: /cron.sh
     restart: unless-stopped
     depends_on:
