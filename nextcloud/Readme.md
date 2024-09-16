@@ -21,7 +21,7 @@ File dirs of nextcloud, sql and redis are mapped to local file system.
 ## Run
 
 Use `docker compose up -d` to run the application. Change to the nextcloud *url:port* and start the installation by choosing an admin user name and pw.
-Use `docker compose build --pull` to update the images. Then connect to the main container `docker exec -u 33 -it <containter-id> /bin/sh` (the -u option may need to be adapted to the correct number). Run the update command for nextcloud `./occ upgrade` (ideally you are already in the correct directory, otherwise change to `cd /var/www/html`. Done.
+Use `docker compose build --pull` to update the images. A manual build update ma y be triggered like this: `docker build -t nc_enhanced --pull .` (e.g. for QNAP NAS, see below). Then connect to the main container `docker exec -u 33 -it <containter-id> /bin/sh` (the -u option may need to be adapted to the correct number). Run the update command for nextcloud `./occ upgrade` (ideally you are already in the correct directory, otherwise change to `cd /var/www/html`. Done.
 
 ## Caveats
 Currently no healthcheck for the nextcloud container is implemented. Although something is described [here](https://github.com/nextcloud/docker/issues/676), this seems to be an uncertain solution.
