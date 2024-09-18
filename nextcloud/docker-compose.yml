@@ -1,4 +1,4 @@
-version: '3'
+name: nextcloud 
 
 services:
   nc:
@@ -11,17 +11,18 @@ services:
       - mariadb
       - redis
     volumes:
-      - /Users/Daniel/Downloads/nc/nc_data:/var/www/html
+      - ${NC_VOLUME}:/var/www/html
     networks:
-      - redisnet
-      - dbnet
+      - ncnet
     environment:
-      - VIRTUAL_HOST=nextcloud.local
-      - REDIS_HOST=redis
-      - MYSQL_HOST=mariadb
-      - MYSQL_DATABASE=nextcloud
-      - MYSQL_USER=nextcloud
-      - MYSQL_PASSWORD=geheim
+      - VIRTUAL_HOST=${VIRTUAL_HOST}
+      - REDIS_HOST=${REDIS_HOST}
+      - MYSQL_HOST=${MYSQL_HOST}
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+      - MYSQL_USER=${MYSQL_USER}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+      - NEXTCLOUD_TRUSTED_DOMAINS=${NEXTCLOUD_TRUSTED_DOMAINS}
+      - NEXTCLOUD_INIT_HTACCESS=true
       - TZ=Europe/Zurich
 #    healthcheck:
 #      test: ["CMD", "/usr/bin/healthcheck"]
@@ -34,9 +35,9 @@ services:
     container_name: nextcloud-redis
     restart: unless-stopped
     volumes:
-      - /Users/Daniel/Downloads/nc/redis:/data
+      - ${RD_VOLUME}:/data
     networks:
-      - redisnet
+      - ncnet
     expose:
       - 6379
     command: ["--databases", "1"]
@@ -52,18 +53,18 @@ services:
     command: --transaction-isolation=READ-COMMITTED --binlog-format=ROW
     restart: unless-stopped
     volumes:
-      - /Users/Daniel/Downloads/nc/db_data:/var/lib/mysql
+      - ${DB_VOLUME}:/var/lib/mysql
     networks:
-      - dbnet
+      - ncnet
     environment:
-      - MYSQL_DATABASE=nextcloud
-      - MYSQL_USER=nextcloud
-      - MYSQL_ROOT_PASSWORD=geheimroot
-      - MYSQL_PASSWORD=geheim
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+      - MYSQL_USER=${MYSQL_USER}
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
     expose:
       - 3306
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-u", "root", "--password=geheimroot"]
+      test: ["CMD", "mysqladmin", "ping", "-u", "root", "--password=${MYSQL_ROOT_PASSWORD}"]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -72,9 +73,9 @@ services:
     image: nextcloud:apache
     container_name: nextcloud-cron
     networks:
-      - dbnet
+      - ncnet
     volumes:
-      - /Users/Daniel/Downloads/nc/nc_data:/var/www/html
+      - ${NC_VOLUME}:/var/www/html
     entrypoint: /cron.sh
     restart: unless-stopped
     depends_on:
@@ -90,6 +91,5 @@ volumes:
     driver: local
 
 networks:
-  dbnet:
-  redisnet:
+  ncnet:
 
