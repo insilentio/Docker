@@ -7,6 +7,9 @@ services:
     restart: unless-stopped
     ports:
       - 5555:443
+    links:
+      - mariadb
+      - redis
     depends_on:
       - mariadb
       - redis
