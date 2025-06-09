@@ -1,0 +1,17 @@
+version: '3'
+
+services:
+  rs:
+    image: rocker/rstudio:latest
+    restart: always
+    ports: 
+      - 8787:8787
+    volumes:
+      - ./.rstudio_config:/home/rstudio/.config/rstudio
+      - /share/CE_CACHEDEV1_DATA/Container/container-station-data/lib/docker/volumes/nextcloud_nc_data/_data/data/Daniel/files/Documents/IT/Programming/R/:/home/rstudio/workspace
+    environment:
+      - DISABLE_AUTH=true
+
+volumes:
+  rs_data:
+    driver: local

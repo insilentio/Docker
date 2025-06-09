@@ -16,3 +16,4 @@ File dirs for config need to be created on the host first. File dirs for media c
 ## Run
 
 Use `docker compose up -d` to run the application. Use 'docker compose pull' and then 'docker compose up -d' again to update the images.
+
